@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Mancala</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="main.css">
+
+    <script src="main.js"></script>
+  </head>
+  <body>
+
+    <header>
+      <img src="logo.png" alt="Mancala">
+
+      <div class="main-menu closed" id="main-menu">
+        <div class="bars" id="main-menu-bars">
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+        </div>
+        <ul class="menu-content">
+          <li class="game-command open-overlay">regras</li>
+          <li class="game-command open-overlay">configuração</li>
+          <li class="game-command open-overlay">classificações</li>
+          <li class="game-command">desistir do jogo</li>
+        </ul>
+      </div>
+
+      <div class="login" id="login">
+        LOGIN
+      </div>
+    </header>
+
+
+    <div class="game-area">
+      <div class="game-half" id="left-half">
+        <div class="storage">
+
+        </div>
+        <div class="pits">
+          <div class="row first-row">
+            <div class="pit initializer-pit">
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+            </div>
+            <div class="pit initializer-pit">
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+            </div>
+          </div>
+          <div class="row second-row">
+            <div class="pit initializer-pit">
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+            </div>
+            <div class="pit initializer-pit">
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-half" id="right-half">
+        <div class="storage">
+
+        </div>
+
+        <div class="pits">
+          <div class="row first-row">
+            <div class="pit initializer-pit">
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+            </div>
+            <div class="pit initializer-pit">
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+            </div>
+          </div>
+          <div class="row second-row">
+            <div class="pit initializer-pit">
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+            </div>
+            <div class="pit initializer-pit">
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+              <div class="seed initializer-seed">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-mask" id="page-mask">
+
+    </div>
+
+    <div class="game-overlay" id="game-rules">
+      <div class="close-button">
+        x
+      </div>
+
+      <div class="overlay-name">
+        REGRAS DO JOGO
+      </div>
+
+      <div class="game-rules-page" id="game-rules-page1">
+        Os armazéns estão vazios (sem sementes)
+        As restantes cavidades têm o mesmo número de sementes
+        <div class="page-navigation">
+          <div class="page-nav-button next-page">
+            >
+          </div>
+        </div>
+
+      </div>
+
+      <div class="game-rules-page" id="game-rules-page2">
+        Jogadores semeiam as suas sementes alternadamente
+        Na sua vez semeiam a partir de uma das suas cavidades
+        Consoante a situação da última semente semeada, podem
+        voltar a jogar
+        ficar com algumas sementes do adversário
+        Termina quando um dos jogadores fica sem sementes
+        <div class="page-navigation">
+          <div class="page-nav-button previous-page">
+            <
+          </div>
+          <div class="page-nav-button next-page">
+            >
+          </div>
+        </div>
+
+      </div>
+
+      <div class="game-rules-page" id="game-rules-page3">
+        Escolher uma cavidade do seu lado (que não o armazém)
+        Recolher todas as N sementes dessa cavidade
+        Colocar 1 semente nas N cavidade seguintes
+        A semeadura é feita no sentido anti-horário
+        <div class="page-navigation">
+          <div class="page-nav-button previous-page">
+            <
+          </div>
+          <div class="page-nav-button next-page">
+            >
+          </div>
+        </div>
+
+      </div>
+
+      <div class="game-rules-page" id="game-rules-page4">
+        Se a cavidade seguinte for o seu armazém, semear também
+        Sobrando sementes, continuar no lado do adversário
+        Se atingir o armazém do adversário, não semear
+        Mas depois continuar do seu lado, se ainda tiver sementes
+        <div class="page-navigation">
+          <div class="page-nav-button previous-page">
+            <
+          </div>
+          <div class="page-nav-button next-page">
+            >
+          </div>
+        </div>
+
+      </div>
+
+      <div class="game-rules-page" id="game-rules-page5">
+        Volta a jogar se a última semente for semeada for no seu próprio armazém
+
+        Semeando cavidade agora vazia, a última semente cai no armazém e volta a jogar
+        <div class="page-navigation">
+          <div class="page-nav-button previous-page">
+            <
+          </div>
+          <div class="page-nav-button next-page">
+            >
+          </div>
+        </div>
+
+      </div>
+
+      <div class="game-rules-page" id="game-rules-page6">
+        Se a última semente calhar numa sua cavidade vazia, transferir para o seu armazém as sementes
+
+        na cavidade oposta, do adversário
+        assim como essa última semente semeada
+        <div class="page-navigation">
+          <div class="page-nav-button previous-page">
+            <
+          </div>
+          <div class="page-nav-button next-page">
+            >
+          </div>
+        </div>
+
+      </div>
+
+      <div class="game-rules-page" id="game-rules-page7">
+        Jogo termina quando um dos jogadores não pode jogar
+        … porque todas as suas cavidades estão vazias
+        O outro jogador recolhe sementes nas suas cavidades …
+        … que são colocadas no seu armazém
+        Ganha jogador cujo armazém tem mais sementes
+        <div class="page-navigation">
+          <div class="page-nav-button previous-page">
+            <
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-overlay" id="game-configuration">
+
+      <div class="close-button">
+        x
+      </div>
+
+      <div class="overlay-name">
+        CONFIGURAÇÃO
+      </div>
+
+      <form class="game-configuration-form" action="index.html" method="post" id="game-configuration-form">
+
+        <div class="game-config-input">
+          <label for="pits">Cavidades</label>
+          <input type="range" id="pits" name="pits"
+           min="2" max="10" step="2">
+        </div>
+
+
+        <div class="game-config-input">
+          <label for="seeds">Sementes</label>
+          <input type="range" id="seeds" name="seeds"
+           min="0" max="10" step="1">
+        </div>
+
+
+
+        <div class="game-config-input">
+          <input type="radio" id="CPU-opponent" name="opponent" value="CPU-opponent"
+           checked>
+          <label for="CPU-opponent">CPU</label>
+
+          <input type="radio" id="player-opponent" name="opponent" value="player-opponent"
+           checked>
+          <label for="player-opponent">player</label>
+        </div>
+
+
+
+        <div class="game-config-input">
+          <input type="radio" id="opponent-starter" name="starter" value="opponent-starter"
+           checked>
+          <label for="opponent-starter">opponent</label>
+
+          <input type="radio" id="player-starter" name="starter" value="player-starter"
+           checked>
+          <label for="player-starter">player</label>
+        </div>
+
+
+
+        <div class="game-config-input">
+          <input type="radio" id="easy" name="difficulty" value="easy"
+           checked>
+          <label for="easy">easy</label>
+
+          <input type="radio" id="medium" name="difficulty" value="medium"
+           checked>
+          <label for="medium">medium</label>
+
+          <input type="radio" id="hard" name="difficulty" value="hard"
+           checked>
+          <label for="hard">hard</label>
+        </div>
+
+
+
+          <input type="submit" value="Submit">
+
+      </form>
+
+
+    </div>
+
+    <div class="game-overlay" id="game-scoreboard">
+      <div class="close-button">
+        x
+      </div>
+
+      <div class="overlay-name">
+        CLASSIFICAÇÕES
+      </div>
+    </div>
+
+    <div class="game-overlay" id="game-login">
+      <div class="close-button">
+        x
+      </div>
+
+      <div class="overlay-name">
+        LOGIN
+      </div>
+
+      <form class="login-form" action="index.html" method="post">
+
+        <div class="login-data">
+          <label for="uname"><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" required>
+
+          <label for="psw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+
+          <button type="submit">Login</button>
+          <label>
+            <input type="checkbox" checked="checked" name="remember"> Remember me
+          </label>
+        </div>
+
+        <div class="container">
+          <span class="psw">Forgot <a href="#">password?</a></span>
+        </div>
+      </form>
+    </div>
+
+  </body>
+</html>
