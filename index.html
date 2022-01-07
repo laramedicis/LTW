@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="main.css">
 
     <script src="main.js"></script>
+    <script src="mancala.js"></script>
   </head>
   <body>
 
@@ -37,117 +38,37 @@
 
 
     <div class="game-area">
-      <div class="game-half" id="left-half">
-        <div class="storage">
+      <div class="storageLeft">
+      </div>
+      <div class="pits">
+        <div class="row row-playerA">
+          <div class="pit initializer-pit">
+            <div class="seed initializer-seed">
 
-        </div>
-        <div class="pits">
-          <div class="row first-row">
-            <div class="pit initializer-pit">
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
             </div>
-            <div class="pit initializer-pit">
-              <div class="seed initializer-seed">
+            <div class="seed initializer-seed">
 
-              </div>
-              <div class="seed initializer-seed">
+            </div>
+            <div class="seed initializer-seed">
 
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
             </div>
           </div>
-          <div class="row second-row">
-            <div class="pit initializer-pit">
-              <div class="seed initializer-seed">
+        </div>
+        <div class="row row-playerB">
+          <div class="pit initializer-pit">
+            <div class="seed initializer-seed">
 
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
             </div>
-            <div class="pit initializer-pit">
-              <div class="seed initializer-seed">
+            <div class="seed initializer-seed">
 
-              </div>
-              <div class="seed initializer-seed">
+            </div>
+            <div class="seed initializer-seed">
 
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="game-half" id="right-half">
-        <div class="storage">
-
-        </div>
-
-        <div class="pits">
-          <div class="row first-row">
-            <div class="pit initializer-pit">
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
-            </div>
-            <div class="pit initializer-pit">
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
-            </div>
-          </div>
-          <div class="row second-row">
-            <div class="pit initializer-pit">
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
-            </div>
-            <div class="pit initializer-pit">
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
-              <div class="seed initializer-seed">
-
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="storageRight">
       </div>
     </div>
 
@@ -280,7 +201,7 @@
         CONFIGURAÇÃO
       </div>
 
-      <form class="game-configuration-form" action="index.html" method="post" id="game-configuration-form">
+      <form class="game-configuration-form" id="game-configuration-form">
 
         <div class="game-config-input">
           <label for="pits">Cavidades</label>
@@ -322,15 +243,17 @@
 
 
         <div class="game-config-input">
-          <input type="radio" id="easy" name="difficulty" value="easy"
+          <input type="radio" id="player" name="difficulty" value="0"
+           checked>
+          <input type="radio" id="easy" name="difficulty" value="1"
            checked>
           <label for="easy">easy</label>
 
-          <input type="radio" id="medium" name="difficulty" value="medium"
+          <input type="radio" id="medium" name="difficulty" value="2"
            checked>
           <label for="medium">medium</label>
 
-          <input type="radio" id="hard" name="difficulty" value="hard"
+          <input type="radio" id="hard" name="difficulty" value="3"
            checked>
           <label for="hard">hard</label>
         </div>
