@@ -4,6 +4,7 @@ body {
   flex-direction: row;
   background-color: #F5E2C8;
   margin: 0;
+  height: 100vh;
 }
 
 header {
@@ -107,13 +108,19 @@ header .login {
 }
 
 .game-area {
-  width: 80%;
+  background-color: #6E2807;
+  border: 2px solid #6E2807;
+  border-radius: 10px;
+  width: 70%;
+  height: 50%;
+  margin: 5px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-evenly;
+  margin: auto;
 }
 
-.game-area .game-half {
+/* .game-area .game-half {
   border: 2px solid #6E2807;
   background-color: #6E2807;
   border-radius: 10px;
@@ -127,7 +134,7 @@ header .login {
 
 #right-half {
   flex-direction: row-reverse;
-}
+} */
 
 .game-area .storage, .game-area .pit {
   background-color: #340e0d;
@@ -137,6 +144,7 @@ header .login {
   width: 20%;
   height: 90%;
   border-radius: 10px;
+  margin: 10px;
 }
 
 .game-area .pit {
@@ -171,13 +179,17 @@ header .login {
 }
 
 .initializer-pit {
-  width: 50%;
-  padding-top: 50%;
+  width: 25%;
+  padding-top: 25%;
 }
 
 .initializer-seed {
   width: 20%;
   padding-top: 20%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 
