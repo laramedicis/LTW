@@ -1,69 +1,95 @@
+
 class Board{
-    constructor(numberOfCavities,startingSeeds){
-        this.warehouse = {'a':0, 'b':0};
-        this.length = numberOfCavities;
-        this.cavity = {'a':new Array(numberOfCavities), 'b':new Array(numberOfCavities)};
-        this.cavity['a'].forEach(element=>{element=startingSeeds;});
-        this.cavity['b'].forEach(element=>{element=startingSeeds;});
-    }
-    move(player, currentCavity){
-        seeds=this.cavity[player][currentCavity];
-        if(seeds>0){
-            currentPlayer=player; 
-            this.cavity[player][currentCavity]=0;
-            
-            for(;seeds>0;--seeds){
-                ++currentCavity;
-                if(currentCavity>this.length){//has overflown into other players cavities.
-                    currentCavity=0;
-                    currentPlayer=(currentPlayer=='a'?'b':'a');
-                }
-                if(currentCavity==this.length){//if is warehouse
-                    if(currentPlayer==player){
-                        this.warehouse[currentPlayer]++;
-                    }else{
-                        seeds++;//skip placing on opponent warehouse.
-                    }
-                }else{
-                    this.cavity[currentPlayer][currentCavity]++;
-                }
-            }
-            //handle last seed
-            if(currentCavity==this.length){//own warehouse.
-                return player;
-            }
-            if(currentPlayer==player && this.cavity[player][currentCavity]==1){//was on player side and empty
-                this.warehouse[player] += this.cavity[player=='a'?'b':'a'][this.length-1-currentCavity] +1;
-                this.cavity[player=='a'?'b':'a'][this.length-1-currentCavity] =0;
-                this.cavity[player][currentCavity]=0;
-            }
-            return (player=='a'?'b':'a'); //change player turn.
-        }
-        return player;
-    }
-    gameOver(){ ///TODO: read if 1 player finished and update board.
-        this.cavity.forEach(player => {
-            this.cavity[player].forEach(element=>{if(element>0)return false;});
-        });
-        return true;
-    }
+    sides = {};
+    turn;
+    gameOver = false;
 }
-class Game{
-    constructor(startingPlayer,aiLevel,cavities,seeds){
-        this.turn='a';
-        this.aiLevel=0;
-        this.cavities=5;
-        this.seeds=5;
-        this.board = new Board(this.cavities,this.seeds);
+class MancalaLocal{
+    constructor(pits, seeds, player1, player2, turn, aiLevel){
+        this.aiLevel=aiLevel;
+        this.pits=pits;
+        this.players = [player1,player2];
+        this.board= MancalaLocal.newGame(pits,seeds,player1,player2,turn);
     }
-    turn(cavity,playerSide){
-        if(cavity<this.cavities && cavity>=0 && playerSide == this.turn){
-            this.turn = this.board.move(playerSide,cavity);
+    static newGame(pits,seeds,player1,player2,turn){
+        var board= new Board();
+        if(! (turn==player1 || turn ==player2)) throw("Invalid turn value");
+        board.sides[player1]={"store":0,"pits": new Array(pits),};
+        board.sides[player2]={"store":0,"pits": new Array(pits),};
+        board.turn=turn;
+        for(let player in board.sides){
+            for(let i=0;i<pits;++i)
+                board.sides[player].pits[i]=seeds;
         }
-        return this.board.gameOver();
+        board.gameOver = false;
+        return board;
     }
-    makeMove(playerSide,cavity){
-        if(this.turn == playerSide)
-            this.turn = this.board.move(playerSide,cavity);
+    static getOtherPlayer(board,player){
+        for(let p in board.sides)
+            {if(p!=player){
+                return p;
+            }
+        }
+    }
+    static move(board, player, sourcePit){
+        if(player != board.turn) return board;
+        let seeds = board.sides[player].pits[sourcePit];
+        if(seeds==0) return board;
+        
+        let currentPlayer=player;
+        let otherPlayer=MancalaLocal.getOtherPlayer(board,player);
+        let currentPit=sourcePit;
+        let numPits = board['sides'][player]['pits'].length;
+        
+        board['sides'][player]['pits'][sourcePit]=0;
+        for(;seeds>0;--seeds){
+            ++currentPit;
+            if(currentPit>numPits){//has overflown into other side.
+                currentPit=0;
+                currentPlayer=(currentPlayer==player?otherPlayer:player);
+            }
+            if(currentPit==numPits){//is warehouse
+                if(currentPlayer==player){
+                    board.sides[player].store++;
+                }else{
+                    seeds++;
+                    continue; //skip placing on opponent store.
+                }
+            }else{
+                board.sides[currentPlayer].pits[currentPit]++;
+            }
+        }
+        //handle last seed
+        if(currentPit==numPits){//own store.
+            return MancalaLocal.isGameOver(board); //turn remains unchanged.
+        }
+        board.turn = otherPlayer;//change player turn.
+        if(currentPlayer==player && board.sides[player].pits[currentPit]==1){//was on player side and empty
+            board.sides[player].store+= board.sides[otherPlayer].pits[numPits-1-currentPit] + 1;
+            board.sides[otherPlayer].pits[numPits-1-currentPit]=0; // remove from pit in front.
+            board.sides[player].pits[currentPit] = 0;
+        }
+        return MancalaLocal.isGameOver(board); 
+    }
+    static isGameOver(board2){
+        var board=board2;
+        for(let player in board.sides){
+            let playerseeds=0
+            for(let i=0 ; i < board.sides[player].pits.length; ++i){
+                playerseeds+=board.sides[player].pits[i];
+                if(playerseeds>0) break;
+            }
+            if(playerseeds==0){ //player is done.
+                let otherPlayer= MancalaLocal.getOtherPlayer(board,player);
+                board.sides[otherPlayer].pits.forEach((seeds,index)=>{
+                    board.sides[otherPlayer].store+=seeds; //fill opponent warehouse.
+                    board.sides[otherPlayer].pits[index]=0;
+                });
+                board.gameOver=true;
+                return board;
+            }
+        }
+        board.gameOver=false;
+        return board;
     }
 }

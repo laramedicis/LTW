@@ -69,13 +69,11 @@ window.onload = (event) => {
   }
 
   function buildSeeds(pit, seeds){
-    var seedDimensions = (80/seeds).toString() + "%";
-
     for (var i = 0; i < seeds; i++){
       var seed = document.createElement("DIV");
       seed.classList.add("seed");
-      seed.style.width = seedDimensions;
-      seed.style.paddingTop = seedDimensions;
+      seed.style.width = "20%";
+      seed.style.paddingTop = "20%";
       pit.appendChild(seed);
     }
     return 0;
@@ -83,52 +81,55 @@ window.onload = (event) => {
 
   }
 
-  function buildPits(row, pits, seeds){
+  function buildPits(row, pits, seeds, player, invertedIndex=false){
     var pitWidthValue = 100/pits;
     var pitWidth = pitWidthValue.toString() + "%";
     for (var j = 0; j < pits; j++){
       var pit = document.createElement("DIV");
-
       pit.classList.add("pit");
-      pit.setAttribute('player',row?'a':'b');
-      pit.setAttribute('index',j);
+      pit.setAttribute('player',player);
+      pit.setAttribute('pitIndex', invertedIndex? pits-1-j : j);
+      pit.innerHTML=seeds[j];
       pit.style.width = pitWidth;
       pit.style.paddingTop = pitWidth;
-
-      buildSeeds(pit, seeds);
-
+      buildSeeds(pit, seeds[j]);
       row.appendChild(pit);
     }
     return 0;
   }
 
-  function buildBoard(gameBoard){
-    var pits = gameBoard.cavities;
-    var seeds = gameBoard.seeds;
+  function buildBoard(board,numPits){
     var rows = document.getElementsByClassName('row');
-    for (var i = 0; i < rows.length; i++){
+    let players = Object.keys(board.sides);
+    let stores = document.getElementsByClassName('storage');
+    for(let i=0;i<2;++i){
       rows[i].innerHTML = '';
-      buildPits(rows[i], pits, seeds);
+      buildPits(rows[i], numPits, board.sides[players[i]].pits, players[i],i==0);
+      stores[i].style.color="bisque";
+      stores[i].textContent=board.sides[players[i]].store;
     }
-    var allPits = document.getElementsByClassName('pit')
-    for( var i =0;i<allPits.length;++i){
-      allPits[i].addEventListener('click', function(e){
-        gameBoard.makeMove(e['player'],e['index']);
-        updateBoard(gameBoard);
-      })
+    for(var j=0;j<2;++j){
+      for( var i =0;i<numPits;++i){
+        rows[j].children[i].addEventListener('click', function(e){
+          gameBoard.board = MancalaLocal.move(gameBoard.board,e.target.attributes['player'].value,e.target.attributes['pitIndex'].value);
+          updateBoard(gameBoard.board);
+        })
+      }
     }
     return 0;
   }
-  function updateBoard(gameBoard){
-    var pits = gameBoard.cavities;
-    var seeds = gameBoard.seeds;
+  function updateBoard(board){
     var rows = document.getElementsByClassName('row');
-    for (var i = 0; i < rows.length; i++){
+    let players = Object.keys(board.sides);
+    let stores = document.getElementsByClassName('storage');
+    for (var i = 0; i < 2; i++){
       var rowpits = rows[i].childNodes;
-      for(var j = 0; j < gameBoard.board.cavity['a'].length;++j){
-        rowpits[j].innerHTML = '';
-        buildSeeds(rowpits[j],gameBoard.board.cavity[i==0?'a':'b'][j]);
+      let pits = board.sides[players[i]].pits.length
+      for(var j = 0; j < pits;++j){
+        rowpits[j].innerHTML = board.sides[players[i]].pits[i==0? pits-1-j : j];
+        buildSeeds(rowpits[j], board.sides[players[i]].pits[i==0? pits-1-j : j]);
       }
+      stores[i].textContent = board.sides[players[i]].store;
     }
     return 0;
   }
@@ -143,10 +144,11 @@ window.onload = (event) => {
 
     // Get the form data from the event object
     let data = e.formData;
-    gameBoard = new Game(
+    gameBoard = new MancalaLocal(
+        data.get("pits"), data.get("seeds"),'a','b',
         data.get("starter")=="player-starter"? 'a':'b',
-        data.get("difficulty"), data.get("pits"), data.get("seeds"));
-    buildBoard(gameBoard);
+        data.get("difficulty"));
+    buildBoard(gameBoard.board,data.get("pits"));
 
   });
 
