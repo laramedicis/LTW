@@ -107,13 +107,13 @@ window.onload = (event) => {
       buildPits(rows[i], numPits, board.sides[players[i]].pits, players[i],i==0);
       stores[i].style.color="bisque";
       stores[i].textContent=board.sides[players[i]].store;
-    }
-    for(var j=0;j<2;++j){
-      for( var i =0;i<numPits;++i){
-        rows[j].children[i].addEventListener('click', function(e){
-          gameBoard.board = MancalaLocal.move(gameBoard.board,e.target.attributes['player'].value,e.target.attributes['pitIndex'].value);
-          updateBoard(gameBoard.board);
-        })
+      if(board.gameOver){
+        if(board.sides.players[i].store > board.sides.players[i?0:1].store)
+          stores[i].textContent = stores[i].textContent.concat(["(WINNER)"]);
+      }
+      else{
+        if(board.turn==players[i])
+          stores[i].textContent = stores[i].textContent.concat(["(",board.turn,"'s turn)"]);
       }
     }
     return 0;
@@ -130,6 +130,14 @@ window.onload = (event) => {
         buildSeeds(rowpits[j], board.sides[players[i]].pits[i==0? pits-1-j : j]);
       }
       stores[i].textContent = board.sides[players[i]].store;
+      if(board.gameOver){
+        if(board.sides[players[i]].store > board.sides[players[i==1?0:1]].store)
+          stores[i].textContent = stores[i].textContent.concat(["(WINNER)"]);
+      }
+      else{
+        if(board.turn==players[i])
+          stores[i].textContent = stores[i].textContent.concat(["(",board.turn,"'s turn)"]);
+      }
     }
     return 0;
   }
@@ -144,12 +152,41 @@ window.onload = (event) => {
 
     // Get the form data from the event object
     let data = e.formData;
+    const aiLevel = data.get("againstCPU")=="1"?data.get("difficulty"):0;
+    let players = new Array(2);
+    if(aiLevel>0)
+      players=['AI','Player'];
+    else
+      players=['Top','Bottom'];
     gameBoard = new MancalaLocal(
-        data.get("pits"), data.get("seeds"),'a','b',
-        data.get("starter")=="player-starter"? 'a':'b',
-        data.get("difficulty"));
+        data.get("pits"), data.get("seeds"),players[0],players[1],
+        data.get("starter")=="1"? players[1]:players[0],
+        aiLevel);
+    
     buildBoard(gameBoard.board,data.get("pits"));
-
+    
+    var pits = document.getElementsByClassName("pit");
+    for( var i =0;i<pits.length;++i){
+      pits[i].addEventListener('click', 
+        function(e){
+          let player=e.target.attributes['player'].value;
+          if(player!=gameBoard.board.turn || player=='AI') return;
+          gameBoard.board = MancalaLocal.move(gameBoard.board,player,e.target.attributes['pitIndex'].value);
+          updateBoard(gameBoard.board);
+          if(aiLevel>0 && gameBoard.board.turn == 'AI' && !gameBoard.board.gameOver){
+            var AIPlay = ()=>{
+              gameBoard.board = MancalaLocal.aiMove(gameBoard.board,aiLevel);
+              setTimeout(() => {
+                  updateBoard(gameBoard.board);
+                  if(gameBoard.board.turn=='AI'  && !gameBoard.board.gameOver)
+                    AIPlay();
+                }, 1000);
+            }
+            AIPlay();
+          }
+        }
+      );
+    }
   });
 
 

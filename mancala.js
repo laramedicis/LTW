@@ -3,6 +3,23 @@ class Board{
     sides = {};
     turn;
     gameOver = false;
+    clone(){
+        var dest= new Board();
+        dest.turn=this.turn;
+        dest.gameOver=this.gameOver;
+        dest.sides={};
+        for(let player in this.sides){
+            dest.sides[player]={
+                "store": this.sides[player].store,
+                "pits": new Array(this.sides[player].pits.length),
+            };
+            for(let i=0;i<this.sides[player].pits.length;++i){
+                dest.sides[player].pits[i]=this.sides[player].pits[i];
+            }
+        }
+        return dest;
+    }
+
 }
 class MancalaLocal{
     constructor(pits, seeds, player1, player2, turn, aiLevel){
@@ -31,7 +48,8 @@ class MancalaLocal{
             }
         }
     }
-    static move(board, player, sourcePit){
+    static move(board2, player, sourcePit){
+        var board=board2.clone();
         if(player != board.turn) return board;
         let seeds = board.sides[player].pits[sourcePit];
         if(seeds==0) return board;
@@ -72,7 +90,7 @@ class MancalaLocal{
         return MancalaLocal.isGameOver(board); 
     }
     static isGameOver(board2){
-        var board=board2;
+        var board = board2.clone();
         for(let player in board.sides){
             let playerseeds=0
             for(let i=0 ; i < board.sides[player].pits.length; ++i){
@@ -91,5 +109,48 @@ class MancalaLocal{
         }
         board.gameOver=false;
         return board;
+    }
+    static aiMove(board2, aiLevel){
+        var board=board2.clone();
+        const aiPlayer= board.turn;
+        const otherPlayer = MancalaLocal.getOtherPlayer(board,aiPlayer);
+        let boardValue = (b)=>{
+            return b.sides[b.turn].store - b.sides[MancalaLocal.getOtherPlayer(b,b.turn)].store;
+        };
+        let miniMax = (board,depth)=>{
+            if(depth==-1 || board.gameOver){
+                return [-1,boardValue(board) * (board.turn==aiPlayer? 1:-1)];
+            }
+            let i=0;
+            let best = [];
+            for(;i<board.sides[board.turn].pits.length;++i){
+                if(board.sides[board.turn].pits[i]==0)
+                    continue;
+                let nextBoard=MancalaLocal.move(board,board.turn,i);
+                if(nextBoard.turn==aiPlayer){
+                    best = [i,miniMax(nextBoard,depth)[1]];
+                }else{
+                    best = [i,-miniMax(nextBoard,depth-1)[1]];
+                }
+                ++i; break;
+            }
+            for(;i<board.sides[board.turn].pits.length;++i){
+                if(board.sides[board.turn].pits[i]==0)
+                    continue;
+                let nextBoard=MancalaLocal.move(board,board.turn,i);
+                let child=[];
+                if(nextBoard.turn==aiPlayer){
+                    child = [i,miniMax(nextBoard,depth)[1]];
+                }else{
+                    child = [i,-miniMax(nextBoard,depth-1)[1]];
+                }
+                if(child[1]>best[1])
+                    best = child;
+            }
+            return best;
+        }
+        var choice = miniMax(board,aiLevel);
+        console.log(choice);
+        return MancalaLocal.move(board,aiPlayer,choice[0]);
     }
 }

@@ -228,38 +228,38 @@
         <div class="game-config-input">
           <label for="pits">Cavidades</label>
           <input type="range" id="pits" name="pits"
-           min="2" max="10" step="2">
+           min="2" max="10" step="1">
         </div>
 
 
         <div class="game-config-input">
           <label for="seeds">Sementes</label>
           <input type="range" id="seeds" name="seeds"
-           min="0" max="10" step="1">
+           min="1" max="10" step="1">
         </div>
 
 
 
         <div class="game-config-input">
-          <input type="radio" id="CPU-opponent" name="opponent" value="CPU-opponent"
+          <input type="radio" id="CPU-opponent" name="againstCPU" value="1"
            checked>
-          <label for="CPU-opponent">CPU</label>
+          <label for="CPU-opponent">CPU (Always top)</label>
 
-          <input type="radio" id="player-opponent" name="opponent" value="player-opponent"
+          <input type="radio" id="player-opponent" name="againstCPU" value="0"
            checked>
-          <label for="player-opponent">player</label>
+          <label for="player-opponent">Player</label>
         </div>
 
 
 
         <div class="game-config-input">
-          <input type="radio" id="opponent-starter" name="starter" value="opponent-starter"
+          <input type="radio" id="opponent-starter" name="starter" value="0"
            checked>
-          <label for="opponent-starter">opponent</label>
+          <label for="opponent-starter">Top starts</label>
 
-          <input type="radio" id="player-starter" name="starter" value="player-starter"
+          <input type="radio" id="player-starter" name="starter" value="1"
            checked>
-          <label for="player-starter">player</label>
+          <label for="player-starter">Bottom starts</label>
         </div>
 
 
