@@ -187,9 +187,6 @@ header .login {
   width: 20%;
   padding-top: 20%;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 
@@ -262,7 +259,43 @@ header .login {
 
 .game-configuration-form {
   margin: 20px;
+  display: flex;
+  flex-direction: column;
 }
+
+.game-config-input {
+  margin: 15px 0;
+}
+
+input[type="submit" i] {
+  width: fit-content;
+  background-color: #340e0d;
+  color: #F5E2C8;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px auto;
+  cursor: pointer;
+  border: none;
+}
+
+input[type="submit" i]:hover {
+  background-color: #6E2807;
+}
+
+#confirm-quit {
+  width: fit-content;
+  background-color: #340e0d;
+  color: #F5E2C8;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px auto;
+  cursor: pointer;
+}
+
+#confirm-quit:hover {
+  background-color: #6E2807;
+}
+
 
 .login-data {
   display: flex;

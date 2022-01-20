@@ -8,11 +8,48 @@ window.onload = (event) => {
   var pageMask = document.getElementById('page-mask');
   var configForm = document.getElementById('game-configuration-form');
 
+  var initialiazerSeedsArray = document.getElementsByClassName("initializer-seed");
+
   var openOverlays = Array.from(document.getElementsByClassName('open-overlay'));
   var gameOverlays = document.getElementsByClassName('game-overlay');
   var closeButtons = document.getElementsByClassName('close-button');
   var pageNavButtons = document.getElementsByClassName('page-nav-button');
   var gameBoard;
+
+
+
+  function generateRandomPoint(seed, circleHeight, circleWidth){
+
+
+    var xCenter = circleWidth/4;
+    var yCenter = circleHeight/4;
+    var radius = circleWidth/4;
+
+    var randAngle = Math.random() * 2 * Math.PI;
+    var hypotenuse = Math.sqrt(Math.random()) * radius;
+    var adjacent = Math.cos(randAngle) * hypotenuse;
+    var opposite = Math.sin(randAngle) * hypotenuse;
+
+    seed.style.left = (xCenter+adjacent).toString() + "%";
+    seed.style.top = (yCenter+opposite).toString() + "%";
+
+
+  }
+
+
+  function randomizeInitializerSeedPositions(){
+
+
+      for (var i=0; i<initialiazerSeedsArray.length; i++){
+        var seed = initialiazerSeedsArray[i];
+        var pit = initialiazerSeedsArray[i].parentElement;
+        generateRandomPoint(seed, pit.clientHeight, pit.clientWidth);
+      }
+  }
+
+  randomizeInitializerSeedPositions();
+
+
 
   mainMenuBars.addEventListener("click", function(e){
 
@@ -75,6 +112,8 @@ window.onload = (event) => {
       seed.style.width = "20%";
       seed.style.paddingTop = "20%";
       pit.appendChild(seed);
+
+      generateRandomPoint(seed, pit.clientHeight, pit.clientWidth);
     }
     return 0;
 
@@ -162,12 +201,12 @@ window.onload = (event) => {
         data.get("pits"), data.get("seeds"),players[0],players[1],
         data.get("starter")=="1"? players[1]:players[0],
         aiLevel);
-    
+
     buildBoard(gameBoard.board,data.get("pits"));
-    
+
     var pits = document.getElementsByClassName("pit");
     for( var i =0;i<pits.length;++i){
-      pits[i].addEventListener('click', 
+      pits[i].addEventListener('click',
         function(e){
           let player=e.target.attributes['player'].value;
           if(player!=gameBoard.board.turn || player=='AI') return;

@@ -27,7 +27,7 @@
           <li class="game-command open-overlay">regras</li>
           <li class="game-command open-overlay">configuração</li>
           <li class="game-command open-overlay">classificações</li>
-          <li class="game-command">desistir do jogo</li>
+          <li class="game-command open-overlay">desistir do jogo</li>
         </ul>
       </div>
 
@@ -228,14 +228,16 @@
         <div class="game-config-input">
           <label for="pits">Cavidades</label>
           <input type="range" id="pits" name="pits"
-           min="2" max="10" step="1">
+           min="2" max="10" step="1" value="6" oninput="this.nextElementSibling.value = this.value">
+           <output id="amount" name="amount" for="pits">6</output>
         </div>
 
 
         <div class="game-config-input">
           <label for="seeds">Sementes</label>
           <input type="range" id="seeds" name="seeds"
-           min="1" max="10" step="1">
+           min="1" max="10" step="1" value="6" oninput="this.nextElementSibling.value = this.value">
+           <output id="amount" name="amount" for="seeds">6</output>
         </div>
 
 
@@ -296,6 +298,23 @@
 
       <div class="overlay-name">
         CLASSIFICAÇÕES
+      </div>
+    </div>
+
+    <div class="game-overlay" id="quit-game">
+      <div class="close-button">
+        x
+      </div>
+
+      <div class="overlay-name">
+        DESISTIR DO JOGO
+      </div>
+
+      <div class="">
+        TEM A CERTEZA QUE PRETENDE DESISTIR DO JOGO?
+        <div id="confirm-quit">
+          SIM
+        </div>
       </div>
     </div>
 
