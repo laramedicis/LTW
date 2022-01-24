@@ -327,7 +327,7 @@
         LOGIN
       </div>
 
-      <form class="login-form" action="index.html" method="post">
+      <form id="login-form" class="show login-form" action="index.html" method="post">
 
         <div class="login-data">
           <label for="uname"><b>Username</b></label>
@@ -337,17 +337,24 @@
           <input type="password" placeholder="Enter Password" name="psw" required>
 
           <button type="submit">Login</button>
-          <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
-          </label>
         </div>
+
 
         <div class="create-account">
-          <span class="new-account">Not registered? <a href="#">Create account</a></span>
+          <span id="new-account">Not registered? <a href="#">Create account</a></span>
         </div>
 
-        <div class="container">
-          <span class="psw">Forgot <a href="#">password?</a></span>
+      </form>
+
+      <form id="register-form" class="hide register-form" action="index.html" method="post">
+        <div class="register-data">
+          <label for="uname"><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" required>
+
+          <label for="psw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+
+          <button id="register-button" type="submit">Register</button>
         </div>
       </form>
     </div>

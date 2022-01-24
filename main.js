@@ -7,6 +7,9 @@ window.onload = (event) => {
   var loginOverlay = document.getElementById('game-login');
   var pageMask = document.getElementById('page-mask');
   var configForm = document.getElementById('game-configuration-form');
+  var registerForm = document.getElementById('register-form');
+
+  var createAccount = document.getElementById('new-account');
 
   var initialiazerSeedsArray = document.getElementsByClassName("initializer-seed");
 
@@ -15,6 +18,8 @@ window.onload = (event) => {
   var closeButtons = document.getElementsByClassName('close-button');
   var pageNavButtons = document.getElementsByClassName('page-nav-button');
   var gameBoard;
+
+  var registerButton = document.getElementById("register-button");
 
 
 
@@ -228,5 +233,38 @@ window.onload = (event) => {
     }
   });
 
+
+  createAccount.onclick = function(){
+      var loginForm = document.getElementById('login-form');
+      var registerForm = document.getElementById('register-form');
+
+      loginForm.classList.add("hide");
+      loginForm.classList.remove("show");
+      registerForm.classList.add("show");
+      registerForm.classList.remove("hide");
+  };
+
+  function register(nickname, password){
+    console.log("CALLED REGISTER");
+  }
+
+  registerForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  // construct a FormData object, which fires the formdata event
+  new FormData(registerForm);
+  });
+
+  registerForm.addEventListener('formdata', (e) => {
+    let data = e.formData;
+
+    var nickname = data.get("uname");
+    var password = data.get("psw");
+
+    register(nickname, password);
+  });
+
+  function ranking(){
+
+  }
 
 };

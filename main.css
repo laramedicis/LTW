@@ -297,23 +297,35 @@ input[type="submit" i]:hover {
 }
 
 
-.login-data {
+.login-data, .register-data {
   display: flex;
   flex-direction: column;
 }
 
-.login-data input {
+.login-data input, .register-data input {
   margin-bottom: 10px;
   border: none;
   border-radius: 2px;
 }
 
-.login-data button {
+.login-data button, .register-data input {
   border: none;
   border-radius: 2px;
   background-color: #CC6502;
   color: #6E2807;
   cursor: pointer;
+}
+
+#register-form {
+  display: none;
+}
+
+.show {
+  display: block !important;
+}
+
+.hide {
+  display: none !important;
 }
 
 /* INPUT OVERRIDES */
